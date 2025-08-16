@@ -21,7 +21,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import LoginInput from '@/components/login/LoginInput.vue'
-import ImgToast from '@/components/toast/ImgToast.vue' // 新增
+import ImgToast from '@/components/toast/ImgToast.vue'
+import { loginApi } from '@/utils/http'
+import { encryptWithPublicKey } from '@/utils/encrypt'
 
 
 const phone = ref('')
@@ -38,11 +40,17 @@ function showImgOnlyToast(url: string) {
   showImgToast.value = true
 }
 
-function handleLogin() {
-  // 这里模拟登录逻辑
-  if (phone.value === '13800138000' && password.value === '123456') {
+async function handleLogin() {
+  try {
+    // 使用工具类加密密码
+    const encryptedPwd = encryptWithPublicKey(password.value)
+    const data = await loginApi(phone.value, encryptedPwd)
+    console.log("登录结果", data)
+    uni.setStorageSync('userInfo', data)
+    uni.setStorageSync('token', data.token)
     showImgOnlyToast('/static/login/login-success.png')
-  } else {
+    // 登录成功后可处理返回数据
+  } catch (e) {
     showImgOnlyToast('/static/login/login-failed.png')
   }
 }

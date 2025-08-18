@@ -45,11 +45,14 @@ async function handleLogin() {
     // 使用工具类加密密码
     const encryptedPwd = encryptWithPublicKey(password.value)
     const data = await loginApi(phone.value, encryptedPwd)
-    console.log("登录结果", data)
     uni.setStorageSync('userInfo', data)
     uni.setStorageSync('token', data.token)
     showImgOnlyToast('/static/login/login-success.png')
-    // 登录成功后可处理返回数据
+    // 登录成功后跳转到 main 页面
+    setTimeout(() => {
+      uni.redirectTo({ url: '/pages/main/main' })
+    }, 1500)
+
   } catch (e) {
     showImgOnlyToast('/static/login/login-failed.png')
   }

@@ -32,13 +32,11 @@
           <div class="mini-days">{{ mini.days }}</div>
           <div class="mini-unit">{{ mini.unit }}</div>
         </div>
-
-
       </div>
     </div>
 
     <div class="add-btn">
-      <img src="/static/normal/ask.png" alt="add" />
+      <img src="/static/main/add.png" alt="add" class="btn-icon" />
     </div>
   </div>
 </template>
@@ -178,7 +176,7 @@ const miniEvents = ref([
     flex: 1;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 2px 10px;
   }
 }
 
@@ -219,18 +217,31 @@ const miniEvents = ref([
 
   .mini-days {
     flex: 1;
-    background: #6b4eff;
+    display: flex;
+    justify-content: center;
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
+    background: rgba(109, 96, 168, 1);
     min-width: 60rpx;
     color: #fff;
     height: 100%;
+    padding: 0 8px;
 
   }
 
   .mini-unit {
     width: 60rpx;
-    background: #6b4eff;
+    display: flex;
+    justify-content: center;
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
+    background: rgba(78, 45, 92, 1);
     height: 100%;
     color: #888;
+    border-radius: 0 20px 20px 0;
+    padding: 0 8px;
   }
 
 }
@@ -238,14 +249,14 @@ const miniEvents = ref([
 
 
 .add-btn {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 150rpx;
 
-.add-btn img {
-  width: 48px;
-  height: 48px;
-  opacity: 0.5;
+  .btn-icon {
+    width: 100rpx;
+    height: 100rpx;
+  }
 }
 </style>

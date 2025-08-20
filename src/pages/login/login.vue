@@ -61,10 +61,10 @@ async function handleLogin() {
 const loginBtnStyle = 'margin-top:60rpx;font-size:36rpx;border-radius:100rpx;background:rgba(107,78,255,1);color:#fff;width:100%;height:96rpx;';
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .login-container {
   padding: 40px 20px 0 20px;
-  background: #f7f8fa;
+  background: $main-bg-color;
   min-height: 100vh;
 }
 

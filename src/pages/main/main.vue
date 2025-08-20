@@ -21,7 +21,7 @@
       <div class="mini-card" v-for="mini in miniDateList" :key="mini.id">
         <div class="mini-left">
           <img :src="mini.icon" class="mini-icon" />
-          <div class="mini-left">
+          <div class="mini-left2">
             <span class="mini-date">距离</span>
             <span class="mini-label">{{ mini.description }}</span>
             <span class="mini-date">{{ mini.statusText }}</span>
@@ -82,7 +82,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .main-content {
-  background: #f7f8fa;
+  background: $main-bg-color;
   min-height: 100vh;
   padding: 20px 0 0 0;
 }
@@ -173,74 +173,77 @@ onMounted(() => {
     display: flex;
     align-items: center;
     padding: 2px 10px;
+
+    .mini-icon {
+      width: 50rpx;
+      height: 50rpx;
+      margin-right: 8px;
+    }
+
+    .mini-left2 {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 2px 10px;
+
+      .mini-label {
+        flex: 1;
+        text-align: center;
+        color: #555;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
   }
-}
 
-.mini-list {
-
-  background: #f7f8fa;
-}
-
-.mini-item {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-}
-
-.mini-icon {
-  width: 50rpx;
-  height: 50rpx;
-  margin-right: 8px;
-}
-
-.mini-label {
-  flex: 1;
-  text-align: center;
-  color: #555;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.mini-right {
-  margin: 0px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-
-  .mini-days {
-    flex: 1;
+  .mini-right {
+    margin: 0px;
+    padding: 0px;
     display: flex;
-    justify-content: center;
-    /* 水平居中 */
     align-items: center;
-    /* 垂直居中 */
-    background: rgba(109, 96, 168, 1);
-    min-width: 60rpx;
-    color: #fff;
-    height: 100%;
-    padding: 0 8px;
+    justify-content: space-between;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    .mini-days {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      /* 水平居中 */
+      align-items: center;
+      /* 垂直居中 */
+      background: rgba(109, 96, 168, 1);
+      min-width: 60rpx;
+      color: #fff;
+      height: 100%;
+      padding: 0 8px;
+
+    }
+
+    .mini-unit {
+      width: 60rpx;
+      display: flex;
+      justify-content: center;
+      /* 水平居中 */
+      align-items: center;
+      /* 垂直居中 */
+      background: rgba(78, 45, 92, 1);
+      height: 100%;
+      color: #888;
+      border-radius: 0 20px 20px 0;
+      padding: 0 8px;
+    }
 
   }
 
-  .mini-unit {
-    width: 60rpx;
-    display: flex;
-    justify-content: center;
-    /* 水平居中 */
-    align-items: center;
-    /* 垂直居中 */
-    background: rgba(78, 45, 92, 1);
-    height: 100%;
-    color: #888;
-    border-radius: 0 20px 20px 0;
-    padding: 0 8px;
-  }
+
+
 
 }
+
+
+
 
 
 

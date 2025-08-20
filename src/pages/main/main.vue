@@ -1,36 +1,36 @@
 <template>
-  <navbar title="倒数日" />
+  <navbar title="倒数日" backgroundColor="rgba(23, 111, 87, 1)" />
   <div class="main-content">
-    <div class="card" v-for="item in events" :key="item.id">
+    <div class="card" v-for="item in dateList" :key="item.id">
       <div class="card-left">
         <div class="card-title">
-          <span>{{ item.title }}</span>
+          <span>{{ item.description }}</span>
         </div>
-        <div class="card-date">{{ item.date }}</div>
+        <div class="card-date">{{ item.targetDate }}</div>
         <img :src="item.icon" alt="icon" class="card-icon" />
       </div>
       <div class="card-right">
         <span class="card-status">{{ item.statusText }}</span>
         <div class="card-days">
-          <span class="days-num">{{ item.days }}</span>
+          <span class="days-num">{{ item.leftDays }}</span>
           <span class="days-unit">天</span>
         </div>
       </div>
     </div>
     <div class="mini-list">
-      <div class="mini-card" v-for="mini in miniEvents" :key="mini.id">
+      <div class="mini-card" v-for="mini in miniDateList" :key="mini.id">
         <div class="mini-left">
           <img :src="mini.icon" class="mini-icon" />
           <div class="mini-left">
             <span class="mini-date">距离</span>
-            <span class="mini-label">{{ mini.title }}</span>
+            <span class="mini-label">{{ mini.description }}</span>
             <span class="mini-date">{{ mini.statusText }}</span>
           </div>
         </div>
 
         <div class="mini-right">
-          <div class="mini-days">{{ mini.days }}</div>
-          <div class="mini-unit">{{ mini.unit }}</div>
+          <div class="mini-days">{{ mini.leftDays }}</div>
+          <div class="mini-unit">天</div>
         </div>
       </div>
     </div>
@@ -42,46 +42,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Navbar from '@/components/navbar/navbar.vue'
+import { dataListApi } from '@/utils/http'
 
-const events = ref([
-  {
-    id: 1,
-    title: '毕业典礼',
-    statusText: '还有',
-    date: '2025年8月1日',
-    icon: '/static/main/clock.png',
-    days: 2213
-  },
-  {
-    id: 2,
-    title: '生日宴会',
-    statusText: '已经',
-    date: '2024年8月1日',
-    icon: '/static/main/clock.png',
-    days: 10
-  }
-])
+// 定义类型
+interface DateDTO {
+  id: string
+  bookId: string
+  description: string
+  targetDate: string
+  leftDays: number
+  icon: string
+  statusText: string
+}
 
-const miniEvents = ref([
-  {
-    id: 1,
+const dateList = ref<DateDTO[]>([])
+const miniDateList = ref<DateDTO[]>([])
+async function getDateList() {
+  // 获取数据
+  const res = await dataListApi('')
+
+  const list = (res.dateDTOList || []).map((item: DateDTO) => ({
+    ...item,
+    statusText: item.leftDays > 0 ? '还有' : '已经',
     icon: '/static/main/clock.png',
-    title: '生日',
-    statusText: '还有',
-    days: 56,
-    unit: '天'
-  },
-  {
-    id: 2,
-    icon: '/static/main/clock.png',
-    title: '毕业典礼',
-    statusText: '已经',
-    days: 100,
-    unit: '天'
-  }
-])
+    leftDays: Math.abs(item.leftDays)
+  }))
+  dateList.value = list.slice(0, 2)
+  miniDateList.value = list.slice(2)
+
+}
+
+onMounted(() => {
+  getDateList()
+})
+
 </script>
 
 <style scoped lang="scss">

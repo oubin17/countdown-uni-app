@@ -1,15 +1,20 @@
 <template>
-  <view class="navbar-container" :style="navbarStyle">
-    <view class="back-icon" @click="handleBackClick">
-      <image v-if="pageStacks > 1" src="../../static/navbar/back.png"></image>
-      <image v-else src="../../static/navbar/home.png"></image>
-    </view>
-    <view class="title-wrapper">
-      <view class="title">{{ props.title }}</view>
-    </view>
-  </view>
   <!-- 提供一个占位元素，高度等于导航栏高度，确保内容不被遮挡 -->
   <view class="navbar-placeholder" :style="placeholderStyle"></view>
+  <view class="navbar-wrapper">
+    <view class="navbar_status" :style="navbarStatus"></view>
+    <view class="navbar-container" :style="navbarStyle">
+      <view class="back-icon" @click="handleBackClick">
+        <image v-if="pageStacks > 1" src="../../static/navbar/back.png"></image>
+        <image v-else src="../../static/navbar/home.png"></image>
+      </view>
+      <view class="title-wrapper">
+        <view class="title">{{ props.title }}</view>
+      </view>
+    </view>
+
+  </view>
+
 </template>
 
 <script setup lang="ts">
@@ -21,6 +26,10 @@ const props = defineProps({
     type: String,
     default: '默认页'
   },
+  backgroundColor: {
+    type: String,
+    default: '#fff'
+  }
 });
 
 //页面栈数量
@@ -46,10 +55,17 @@ const navbarHeight = ref(0);
 const platform = ref('');
 const totalHeight = ref(0);
 
+const navbarStatus = computed(() => {
+  return {
+    height: `${statusBarHeight.value}rpx`,
+    // backgroundColor: '#fff'
+  };
+});
+
 // 计算导航栏样式
 const navbarStyle = computed(() => {
   return {
-    marginTop: `${statusBarHeight.value}rpx`,
+    // marginTop: `${statusBarHeight.value}rpx`,
     height: `${navbarHeight.value}rpx`,
   };
 });
@@ -57,7 +73,8 @@ const navbarStyle = computed(() => {
 // 计算占位元素样式
 const placeholderStyle = computed(() => {
   return {
-    height: `${totalHeight.value}rpx`
+    height: `${totalHeight.value}rpx`,
+    backgroundColor: props.backgroundColor
   };
 });
 
@@ -106,12 +123,18 @@ const leftClick = () => {
 </script>
 
 <style scoped lang="less">
-.navbar-container {
+.navbar-wrapper {
   position: fixed; // 固定定位，使导航栏固定在页面顶部
   top: 0; // 距离顶部0
   left: 0; // 距离左侧0
   right: 0; // 距离右侧0，与left:0配合实现宽度100%
   z-index: 999; // 设置较高的层级，确保导航栏显示在其他内容之上
+  // background-color: #fff; // 设置背景颜色
+}
+
+.navbar-container {
+  position: relative; // 相对定位，为内部绝对定位元素提供参考
+  width: 100%; // 宽度100%
 
   .back-icon {
     position: absolute; // 绝对定位

@@ -16,17 +16,27 @@ export function httpRequest<T = any>({
   url,
   method = 'GET',
   data = {},
-  header = {}
+  header = {},
+  params = {}
 }: {
   url: string
   method?: 'GET' | 'POST'
   data?: any
   header?: Record<string, any>
+  params?: Record<string, any>
 }): Promise<T> {
+  // 拼接 params 到 url
+  let fullUrl = BASE_URL + url
+  if (params && Object.keys(params).length > 0) {
+    const query = Object.entries(params)
+      .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+      .join('&')
+    fullUrl += (url.includes('?') ? '&' : '?') + query
+  }
   return new Promise((resolve, reject) => {
     const token = uni.getStorageSync('token') || ''
     uni.request({
-      url: BASE_URL + url,
+      url: fullUrl,
       method,
       data,
       header: {
@@ -60,6 +70,17 @@ export function loginApi(loginId: string, identifyValue: string) {
       loginType: '1',
       identifyType: '1',
       identifyValue
+    }
+  })
+}
+
+// 获取数据列表接口示例
+export function dataListApi(bookId: string) {
+  return httpRequest({
+    url: '/countdown/date/list',
+    method: 'GET',
+    params: {
+      bookId
     }
   })
 }

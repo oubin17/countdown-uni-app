@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="add-btn">
+    <div class="add-btn" @click="handleAddClick">
       <img src="/static/main/add.png" alt="add" class="btn-icon" />
     </div>
   </div>
@@ -82,6 +82,13 @@ const handleBookClick = (book: BookDTO) => {
   console.log('书单点击:', book)
   // 根据选中的书单重新获取数据
   getDateListByBook(book.id)
+}
+
+// 处理添加按钮点击
+const handleAddClick = () => {
+  uni.navigateTo({
+    url: '/pages/date/dateadd'
+  })
 }
 
 // 根据书单ID获取数据

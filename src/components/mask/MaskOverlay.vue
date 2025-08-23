@@ -11,6 +11,7 @@
         </view>
       </view>
     </view>
+    <img src="/static/main/cloud.png" alt="icon" class="bottom-icon" @click="handleCloudClick" />
   </u-overlay>
 </template>
 
@@ -77,6 +78,14 @@ const handleBookClick = (book: BookDTO) => {
   handleClose()
 }
 
+// 处理云朵图片点击
+const handleCloudClick = () => {
+  uni.navigateTo({
+    url: '/pages/book/bookadd'
+  })
+  handleClose()
+}
+
 // 监听show属性变化，当遮罩显示时获取书单数据
 watch(() => props.show, (newShow) => {
   if (newShow) {
@@ -98,6 +107,7 @@ watch(() => props.show, (newShow) => {
   padding: 20rpx 30rpx;
   box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.15);
   animation: slideDown 0.3s ease-out;
+  background: rgba(64, 68, 70, 1);
 }
 
 @keyframes slideDown {
@@ -116,47 +126,59 @@ watch(() => props.show, (newShow) => {
   display: flex;
   flex-direction: column;
   gap: 20rpx;
-}
 
-.book-item {
-  display: flex;
-  align-items: center;
-  gap: 20rpx;
-  padding: 20rpx;
-  border-radius: 12rpx;
-  background-color: #f8f9fa;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  .book-item {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    padding: 20rpx;
+    border-radius: 12rpx;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: rgba(151, 156, 158, 1);
 
-  &:hover {
-    background-color: #e9ecef;
-  }
+    &:hover {
+      background-color: #e9ecef;
+    }
 
-  &:active {
-    background-color: #dee2e6;
-    transform: scale(0.98);
-  }
+    &:active {
+      background-color: #dee2e6;
+      transform: scale(0.98);
+    }
 
-  .card-icon {
-    width: 60rpx;
-    height: 60rpx;
-    margin-right: 8px;
-    /* width: 32px; */
-    /* height: 32px; */
-    /* max-width: 32px;
+    .card-icon {
+      width: 60rpx;
+      height: 60rpx;
+      margin-right: 8px;
+      /* width: 32px; */
+      /* height: 32px; */
+      /* max-width: 32px;
     max-height: 32px;
     object-fit: contain;
     display: block;
     margin: 0 auto; */
+    }
+  }
+
+  .book-name {
+    font-size: 32rpx;
+    color: #333;
+    font-weight: 400;
+    flex: 1;
   }
 }
 
-.book-name {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: 400;
-  flex: 1;
+.bottom-icon {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
+  z-index: 1600;
+  object-fit: contain;
 }
+
 
 .empty-tip {
   display: flex;

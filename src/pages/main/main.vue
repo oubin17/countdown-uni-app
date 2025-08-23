@@ -1,5 +1,6 @@
 <template>
-  <navbar title="倒数日" backgroundColor="rgba(23, 111, 87, 1)" />
+  <navbar title="倒数日" backgroundColor="rgba(23, 111, 87, 1)" @show-mask="handleShowMask"
+    @height-calculated="handleHeightCalculated" />
   <div class="main-content">
     <div class="card" v-for="item in dateList" :key="item.id">
       <div class="card-left">
@@ -39,44 +40,72 @@
       <img src="/static/main/add.png" alt="add" class="btn-icon" />
     </div>
   </div>
+
+  <!-- 遮罩层组件 -->
+  <MaskOverlay v-model:show="showMask" :navbar-height="navbarHeight" @book-click="handleBookClick" />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import Navbar from '@/components/navbar/navbar.vue'
+import MaskOverlay from '@/components/mask/MaskOverlay.vue'
 import { dataListApi } from '@/utils/http'
+import type { DateDTO, BookDTO } from '@/types'
 
-// 定义类型
-interface DateDTO {
-  id: string
-  bookId: string
-  description: string
-  targetDate: string
-  leftDays: number
-  icon: string
-  statusText: string
-}
-
+// 使用导入的类型
 const dateList = ref<DateDTO[]>([])
 const miniDateList = ref<DateDTO[]>([])
-async function getDateList() {
-  // 获取数据
-  const res = await dataListApi('')
+// 遮罩层显示状态
+const showMask = ref(false)
+// navbar高度状态
+const navbarHeight = ref(180) // 默认值
 
-  const list = (res.dateDTOList || []).map((item: DateDTO) => ({
-    ...item,
-    statusText: item.leftDays > 0 ? '还有' : '已经',
-    icon: '/static/main/clock.png',
-    leftDays: Math.abs(item.leftDays)
-  }))
-  dateList.value = list.slice(0, 2)
-  miniDateList.value = list.slice(2)
 
+// 处理navbar的show-mask事件
+const handleShowMask = () => {
+  showMask.value = true
 }
 
+// 处理navbar高度计算完成事件
+const handleHeightCalculated = (height: number) => {
+  navbarHeight.value = height + 20 // 高度 + 20rpx间距
+  console.log('接收到navbar高度:', height, '计算后高度:', navbarHeight.value)
+}
+
+
 onMounted(() => {
-  getDateList()
+  getDateListByBook('')
 })
+
+// 处理书单点击
+const handleBookClick = (book: BookDTO) => {
+  console.log('书单点击:', book)
+  // 根据选中的书单重新获取数据
+  getDateListByBook(book.id)
+}
+
+// 根据书单ID获取数据
+async function getDateListByBook(bookId: string) {
+  try {
+    // 获取数据
+    const res = await dataListApi(bookId)
+
+    const list = (res.dateDTOList || []).map((item: DateDTO) => ({
+      ...item,
+      statusText: item.leftDays > 0 ? '还有' : '已经',
+      icon: '/static/main/clock.png',
+      leftDays: Math.abs(item.leftDays)
+    }))
+    dateList.value = list.slice(0, 2)
+    miniDateList.value = list.slice(2)
+  } catch (error) {
+    console.error('获取书单数据失败:', error)
+    uni.showToast({
+      title: '获取数据失败',
+      icon: 'none'
+    })
+  }
+}
 
 </script>
 

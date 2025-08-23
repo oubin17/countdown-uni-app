@@ -84,3 +84,11 @@ export function dataListApi(bookId: string) {
     }
   })
 }
+
+// 获取书单接口示例
+export function bookListApi() {
+  return httpRequest({
+    url: '/countdown/book/list',
+    method: 'GET'
+  })
+}

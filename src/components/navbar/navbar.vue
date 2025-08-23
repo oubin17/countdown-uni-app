@@ -6,13 +6,12 @@
     <view class="navbar-container" :style="navbarStyle">
       <view class="back-icon" @click="handleBackClick">
         <image v-if="pageStacks > 1" src="../../static/navbar/back.png"></image>
-        <image v-else src="../../static/navbar/home.png"></image>
+        <image v-else src="../../static/main/list.png"></image>
       </view>
       <view class="title-wrapper">
         <view class="title">{{ props.title }}</view>
       </view>
     </view>
-
   </view>
 
 </template>
@@ -32,6 +31,9 @@ const props = defineProps({
   }
 });
 
+// 定义事件
+const emit = defineEmits(['show-mask', 'height-calculated'])
+
 //页面栈数量
 const pageStacks = computed(() => {
   return getCurrentPages().length;
@@ -43,9 +45,8 @@ const handleBackClick = () => {
   if (pageStacks.value > 1) {
     uni.navigateBack();
   } else {
-    uni.switchTab({
-      url: '/pages/index/index'
-    })
+    // 向父组件抛出事件，请求显示遮罩层
+    emit('show-mask')
   }
 }
 
@@ -100,6 +101,9 @@ onMounted(() => {
     // 计算总高度
     totalHeight.value = statusBarHeight.value + navbarHeight.value;
 
+    // 向父组件发送高度信息
+    emit('height-calculated', totalHeight.value)
+
     console.log('平台:', platform.value);
     console.log('状态栏高度:', statusBarHeight.value, 'rpx');
     console.log('导航栏高度:', navbarHeight.value, 'rpx');
@@ -150,8 +154,8 @@ const leftClick = () => {
     z-index: 1000; // 设置较高的层级，确保导航栏显示在其他内容之上
 
     image {
-      width: 50rpx; // 图标宽度
-      height: 50rpx; // 图标高度
+      width: 40rpx; // 图标宽度
+      height: 40rpx; // 图标高度
       object-fit: contain; // 保持图片比例，确保完整显示
     }
   }

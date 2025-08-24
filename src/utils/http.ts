@@ -1,6 +1,6 @@
 // 通用 HTTP 工具类，支持多环境配置（uni-app专用）
 import envConfig from '@/env.config'
-import { BookDTO } from '@/types/date'
+import { BookDTO, DateDTO } from '@/types/date'
 const ENV = (import.meta.env.MODE as 'development' | 'production') || 'development'
 const BASE_URL = envConfig[ENV].baseURL
 
@@ -98,6 +98,15 @@ export function bookListApi() {
 export function addBookApi(bookInfo: BookDTO) {
   return httpRequest({
     url: '/countdown/book/add',
+    method: 'POST',
+    data: bookInfo
+  })
+}
+
+// 添加倒数日
+export function addDateApi(bookInfo: DateDTO) {
+  return httpRequest({
+    url: '/countdown/date/add',
     method: 'POST',
     data: bookInfo
   })

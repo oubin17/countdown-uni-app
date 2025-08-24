@@ -48,9 +48,9 @@ async function handleLogin() {
     uni.setStorageSync('userInfo', data)
     uni.setStorageSync('token', data.token)
     showImgOnlyToast('/static/login/login-success.png')
-    // 登录成功后跳转到 main 页面
+    // 登录成功后跳转到 main 页面并清空队列
     setTimeout(() => {
-      uni.redirectTo({ url: '/pages/main/main' })
+      uni.reLaunch({ url: '/pages/main/main' })
     }, 1500)
 
   } catch (e) {

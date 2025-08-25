@@ -1,5 +1,6 @@
 <template>
-  <navbar title="添加 Book" backgroundColor="rgba(23, 111, 87, 1)" />
+  <!-- <navbar title="添加 Book" backgroundColor="rgba(23, 111, 87, 1)" /> -->
+  <Navbartest></Navbartest>
   <view class="book-content">
     <view class="book-card">
       <view class="input-row">
@@ -12,8 +13,7 @@
       </view>
     </view>
     <view class="submit-container">
-      <up-button type="primary" :loading="loading" @click="handleSubmit" class="submit-btn"
-        :custom-style="buttonStyle">提交</up-button>
+      <up-button type="primary" :loading="loading" @click="handleSubmit" :custom-style="buttonStyle">提交</up-button>
     </view>
   </view>
 </template>
@@ -22,6 +22,7 @@
 import { ref } from 'vue'
 import type { BookDTO } from '@/types/date'
 import { addBookApi } from '@/utils/http'
+import Navbartest from '@/components/navbar/navbartest.vue'
 
 // 表单数据
 const bookForm = ref<BookDTO>({
@@ -136,25 +137,6 @@ const handleSubmit = async () => {
     bottom: 70rpx;
     padding: 0 20px;
   }
-
-  // .submit-btn {
-  //   width: 100%;
-  //   background: rgba(64, 68, 70, 1) !important;
-  //   border-radius: 50rpx !important;
-
-  // :deep(.u-button) {
-  //   background-color: rgba(64, 68, 70, 1) !important;
-  //   background: rgba(64, 68, 70, 1) !important;
-  //   border-radius: 50rpx !important;
-  //   border: none !important;
-  // }
-
-  // :deep(.u-button__text) {
-  //   color: #fff !important;
-  // }
-  // }
-
-  // }
 
   // 全局样式穿透（不受 scoped 限制）
 }
